@@ -6,11 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +50,8 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "roleId"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
+
 
     public User() {
     }
@@ -124,6 +127,30 @@ public class User implements UserDetails {
     public String getEmail() {
         return email;
     }
+    public String getRolesAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Role role : roles) {
+            sb.append(role.toString().substring(5));
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", job='" + job + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -131,6 +158,9 @@ public class User implements UserDetails {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+    public String getStringRoles(){
+        return roles.toString();
     }
 
     public void setRoles(Set<Role>roles) {
@@ -171,4 +201,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
