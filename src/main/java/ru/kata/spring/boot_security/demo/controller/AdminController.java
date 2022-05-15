@@ -32,14 +32,14 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
-        return "users" ;
+        return "users";
     }
 
     @GetMapping("admin/new")
     public String pageCreateUser(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("listRoles", roleService.getAllRoles());
-        return "create" ;
+        return "create";
     }
 
     @PostMapping("admin/new")
@@ -47,23 +47,23 @@ public class AdminController {
                              @Valid User user, BindingResult bindingResult,
                              @RequestParam("listRoles") ArrayList<Long> roles) {
         if (bindingResult.hasErrors()) {
-            return "create" ;
+            return "create";
         }
         if (userService.getUserByLogin(user.getUsername()) != null) {
             bindingResult.addError(new FieldError("username", "username",
                     String.format("User with name \"%s\" is already exist!", user.getUsername())));
-            return "create" ;
+            return "create";
         }
         user.setRoles(roleService.findByIdRoles(roles));
         userService.addUser(user);
-        return "redirect:/admin" ;
+        return "redirect:/admin";
     }
 
 
     @DeleteMapping("/{id}/delete")
     public String pageDelete(@PathVariable("id") long id) {
         userService.removeUser(id);
-        return "redirect:/admin" ;
+        return "redirect:/admin";
     }
 
 
@@ -72,7 +72,7 @@ public class AdminController {
         model.addAttribute("roles", roleService.getAllRoles());
         getUserRoles(user);
         userService.updateUser(user);
-        return "redirect:/admin" ;
+        return "redirect:/admin";
     }
 
     private void getUserRoles(User user) {

@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional
+
     public void updateUser(User user) {
 
         userDAO.updateUser(user);

@@ -17,11 +17,12 @@ public class RoleDAOImpl implements RoleDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-    @Transactional
+
     @Override
     public List<Role> getAllRoles() {
         return entityManager.createQuery("select r from Role r").getResultList();
     }
+
     @Transactional
     @Override
     public void addRole(Role role) {

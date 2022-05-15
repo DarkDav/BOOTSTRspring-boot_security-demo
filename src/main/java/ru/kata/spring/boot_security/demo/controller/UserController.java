@@ -19,11 +19,11 @@ public class UserController {
     @GetMapping("/user")
     public String pageForUser(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByLogin(principal.getName()));
-        return "user" ;
+        return "user";
     }
 
     @GetMapping(value = "/login")
     public String loginPage() {
-        return "login" ;
+        return "login";
     }
 }

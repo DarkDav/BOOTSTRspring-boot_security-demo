@@ -18,7 +18,7 @@ public class UserDaoImpl implements UserDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
+
     @Override
     public List<User> getAllUsers() {
         return entityManager.createQuery("select u from User u").getResultList();
@@ -43,6 +43,7 @@ public class UserDaoImpl implements UserDAO {
         q.executeUpdate();
     }
 
+    @Transactional
     @Override
     public void updateUser(User user) {
         entityManager.merge(user);
