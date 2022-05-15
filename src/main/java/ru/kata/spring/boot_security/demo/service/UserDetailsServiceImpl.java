@@ -13,7 +13,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    UserDAO userDAO;
+    private UserDAO userDAO;
 
     public UserDetailsServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;

@@ -27,6 +27,15 @@
     <div class="row h-100">
 
 
+        <div class="p-0 col-2">
+            <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+
+                <a class="nav-link active" href="/user" sec:authorize="(hasAnyAuthority('ADMIN', 'USER'))" role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false">User</a>
+            </div>
+        </div>
+
 
         <div class="p-0 col-10 bg-light">
             <div class="tabs p-4">
@@ -40,9 +49,9 @@
                             <table class="usersTable table table-striped bg-white">
                                 <thead>
                                 <tr>
-                                    <th>UserId</th>
-                                    <th>Name</th>
-                                    <th>Surname</th>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last name</th>
                                     <th>Age</th>
                                     <th>Job</th>
                                     <th>Gender</th>
@@ -53,15 +62,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td th:utext="${user.userId}">User_id</td>
-                                    <td th:utext="${user.name}">Name</td>
-                                    <td th:utext="${user.surname}">Surname</td>
+                                    <td th:utext="${user.id}">ID</td>
+                                    <td th:utext="${user.name}">First Name</td>
+                                    <td th:utext="${user.surname}">LastName</td>
                                     <td th:utext="${user.age}">Age</td>
                                     <td th:utext="${user.job}">Job</td>
                                     <td th:utext="${user.gender}">Gender</td>
                                     <td th:utext="${user.email}">Email</td>
                                     <td th:utext="${user.username}">Login</td>
-
+                                    <td th:text="${user.getRolesAsString()}">Role</td>
 
                                 </tr>
                                 </tbody>

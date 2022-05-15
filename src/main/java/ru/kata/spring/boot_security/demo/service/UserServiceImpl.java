@@ -1,6 +1,9 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
@@ -8,12 +11,13 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserDAO userDAO;
     private final RoleService roleService;
@@ -54,25 +58,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUser(User user) {
-        userDAO.updateUser(passwordCoder(user));
+
+        userDAO.updateUser(user);
     }
 
     @Override
     public User getUserByLogin(String username) {
-       return userDAO.getUserByLogin(username);
+        return userDAO.getUserByLogin(username);
     }
 
     @Override
     public void addDefaultUser() {
-            Set<Role> roleSet = new HashSet<>();
-            roleSet.add(roleService.findById(1L));
-            Set<Role> roleSet2 = new HashSet<>();
-            roleSet2.add(roleService.findById(1L));
-            roleSet2.add(roleService.findById(2L));
-            User user1 = new User("Astra", "Loker", (byte) 27,"SuperMan", "man","user1@mail.ru", "user1", "12345", roleSet);
-            User user2 = new User("Endy", "Poler", (byte) 52,"It","women", "admin@mail.ru", "admin", "admin", roleSet2);
-            addUser(user1);
-            addUser(user2);
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(roleService.findById(1L));
+        Set<Role> roleSet2 = new HashSet<>();
+        roleSet2.add(roleService.findById(1L));
+        roleSet2.add(roleService.findById(2L));
+        User user1 = new User("Astra", "Loker", (byte) 27, "SuperMan", "man", "user1@mail.ru", "user1", "12345", roleSet);
+        User user2 = new User("Endy", "Poler", (byte) 52, "It", "women", "admin@mail.ru", "admin", "admin", roleSet2);
+        addUser(user1);
+        addUser(user2);
     }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userDAO.getUserByLogin(username);
+    }
+
+
 }

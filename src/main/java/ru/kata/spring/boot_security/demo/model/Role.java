@@ -9,18 +9,21 @@ import java.util.Set;
 @Table(name = "role")
 public class Role implements GrantedAuthority {
     @Id
+
     private Long id;
     @Column(name = "rolename", unique = true)
     private String name;
-    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "roles")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
     private Set<User> users;
+
     public Role() {
     }
 
     public Role(Long id) {
         this.id = id;
     }
-    public Role(String rolename){
+
+    public Role(String rolename) {
         this.name = rolename;
     }
 

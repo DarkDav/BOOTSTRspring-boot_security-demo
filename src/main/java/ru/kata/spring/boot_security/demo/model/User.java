@@ -16,37 +16,34 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @Column(name = "id")
+    private Long id;
 
-    @Pattern(regexp = "[A-Za-z]{2,15}", message = "Name should be between 2 and 15 latin characters")
+
     private String name;
 
-    @Pattern(regexp = "[A-Za-z]{2,15}", message = "Name should be between 2 and 15 latin characters")
+
     private String surname;
 
-    @Min(value = 0, message = "Age should be >= 0")
-    @Max(value = 127, message = "Age should be < 128")
+
     private byte age;
 
-    @Pattern(regexp = "[A-Za-z]{2,15}", message = "Name should be between 2 and 15 latin characters")
+
     private String job;
 
-    @Pattern(regexp = "[A-Za-z]{2,15}", message = "Name should be between 2 and 15 latin characters")
+
     private String gender;
 
-    @Pattern(regexp = "([A-z0-9_.-]+)@([A-z0-9_.-]+).([A-z]{2,8})", message = "Enter correct email")
     private String email;
 
-    @NotEmpty(message = "Username cannot be empty")
-    @Size(min = 2, max = 15, message = "Name should be between 2 and 15 latin characters")
+
     @Column(unique = true)
     private String username;
 
-    @NotEmpty(message = "Password cannot be empty")
-    @Size(min = 4, message = "Password should be greater then 4 symbols")
+
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "roleId"))
@@ -56,7 +53,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String surname, byte age,String job, String gender, String email, String username, String password, Set<Role> roles) {
+    public User(String name, String surname, byte age, String job, String gender, String email, String username, String password, Set<Role> roles) {
         this.name = name;
         this.surname = surname;
         this.age = age;
@@ -76,12 +73,13 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Long getUserId() {
-        return userId;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -127,6 +125,7 @@ public class User implements UserDetails {
     public String getEmail() {
         return email;
     }
+
     public String getRolesAsString() {
         StringBuilder sb = new StringBuilder();
         for (Role role : roles) {
@@ -136,21 +135,6 @@ public class User implements UserDetails {
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", age=" + age +
-                ", job='" + job + '\'' +
-                ", gender='" + gender + '\'' +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -159,11 +143,12 @@ public class User implements UserDetails {
     public Set<Role> getRoles() {
         return roles;
     }
-    public String getStringRoles(){
+
+    public String getStringRoles() {
         return roles.toString();
     }
 
-    public void setRoles(Set<Role>roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -202,4 +187,19 @@ public class User implements UserDetails {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", job='" + job + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

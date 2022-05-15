@@ -12,17 +12,17 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-@Transactional
-public class RoleDAOImpl implements RoleDAO{
+
+public class RoleDAOImpl implements RoleDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-
+    @Transactional
     @Override
     public List<Role> getAllRoles() {
         return entityManager.createQuery("select r from Role r").getResultList();
     }
-
+    @Transactional
     @Override
     public void addRole(Role role) {
         entityManager.persist(role);
@@ -30,13 +30,19 @@ public class RoleDAOImpl implements RoleDAO{
 
     @Override
     public Role findById(long id) {
-        return entityManager.find(Role.class,id);
+        return entityManager.find(Role.class, id);
     }
 
     @Override
     public Set<Role> findByIdRoles(List<Long> roles) {
         TypedQuery<Role> q = entityManager.createQuery("select r from Role r where r.id in :role", Role.class);
-        q.setParameter("role",roles);
+        q.setParameter("role", roles);
         return new HashSet<>(q.getResultList());
+    }
+
+    @Override
+    public Role getRole(String userRole) {
+        return entityManager.createQuery("select r from Role r where r.name =: userRole", Role.class)
+                .setParameter("userRole", userRole).getSingleResult();
     }
 }
